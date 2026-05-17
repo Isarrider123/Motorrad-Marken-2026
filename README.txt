@@ -1,11 +1,10 @@
-Motorradreise Italien 2026 Web-App
+Roadbook Marken / Umbrien 2026
 
-Upload auf Server:
-1. Den kompletten Ordnerinhalt auf den Webserver laden.
-2. index.html in Safari/Chrome öffnen.
-3. iPhone: Teilen -> Zum Home-Bildschirm.
+GitHub Pages Austausch:
+1. ZIP entpacken.
+2. Inhalt vollständig ins GitHub-Repository hochladen.
+3. Alte Dateien ersetzen.
+4. Commit changes.
+5. Auf dem iPhone Seite in Safari öffnen und ggf. "Zum Home-Bildschirm" neu hinzufügen.
 
-Hinweis:
-Die interaktive Karte nutzt Leaflet und OpenStreetMap-Kartenkacheln aus dem Internet.
-Die GPX-Dateien sind lokal im Ordner gpx enthalten und über die Seite downloadbar.
-Für den PWA-/App-Modus sollte die Seite über HTTPS laufen.
+Hinweis: GPX und App-Shell werden gecacht. OpenStreetMap-Kartenkacheln und Wetterseiten benötigen Internet.

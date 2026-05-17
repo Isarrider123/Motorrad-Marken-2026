@@ -1,387 +1,337 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#245c4f">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Italien 2026">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <title>Motorradreise Italien 2026</title>
-  <style>
-    :root { --bg:#f5f3ef; --card:#fff; --ink:#1f2933; --muted:#697386; --line:#ddd6cc; --accent:#9b3d22; --green:#245c4f; --soft:#efe5d8; --shadow:0 10px 28px rgba(31,41,51,.10); --radius:18px; }
-    * { box-sizing:border-box } body { margin:0; font-family:system-ui,-apple-system,Segoe UI,sans-serif; background:var(--bg); color:var(--ink); line-height:1.5 }
-    header { background:linear-gradient(135deg,#245c4f,#9b3d22); color:white; padding:28px 16px 22px } .wrap { max-width:1180px; margin:0 auto }
-    h1 { margin:0; font-size:clamp(2rem,6vw,4rem); line-height:1.05; letter-spacing:-.04em } h2 { margin:0 0 14px; font-size:clamp(1.45rem,3vw,2.1rem) } h3 { margin:.1rem 0 .4rem }
-    .subtitle { max-width:850px; opacity:.95 } .pillbar { display:flex; flex-wrap:wrap; gap:8px; margin-top:15px } .pill { border:1px solid rgba(255,255,255,.26); background:rgba(255,255,255,.15); border-radius:999px; padding:8px 11px; font-weight:650 }
-    nav { position:sticky; top:0; z-index:1001; background:rgba(245,243,239,.94); backdrop-filter:blur(12px); border-bottom:1px solid var(--line); overflow:auto; white-space:nowrap } nav .wrap { display:flex; gap:7px; padding:9px 12px } nav a { color:var(--ink); text-decoration:none; font-weight:750; padding:8px 11px; border-radius:999px } nav a:hover { background:var(--soft) }
-    main { padding:20px 13px 56px } section { margin:24px auto } .grid { display:grid; gap:14px } .two { grid-template-columns:repeat(auto-fit,minmax(280px,1fr)) } .three { grid-template-columns:repeat(auto-fit,minmax(220px,1fr)) }
-    .card { background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow) } .muted { color:var(--muted) } .small { font-size:.91rem }
-    .tag { display:inline-block; background:var(--soft); border-radius:999px; padding:4px 8px; margin:2px 4px 2px 0; font-size:.82rem; font-weight:800 } .green { background:#dfece7; color:#164438 } .warn { background:#fff4d6; color:#614700 }
-    .mapgrid { display:grid; grid-template-columns:340px 1fr; gap:14px } #map { min-height:72vh; border-radius:var(--radius); border:1px solid var(--line); box-shadow:var(--shadow); background:#ddd }
-    .route-list { max-height:72vh; overflow:auto; padding-right:4px } .route { display:grid; grid-template-columns:auto 1fr; gap:9px; padding:10px; border:1px solid var(--line); border-radius:14px; margin-bottom:9px; background:#fff } .route input { margin-top:5px }
-    .btn { display:inline-block; text-decoration:none; background:var(--green); color:white; border-radius:12px; padding:8px 10px; font-weight:800; font-size:.9rem } .btn.secondary { background:var(--accent) } .btn.light { background:var(--soft); color:var(--ink) } .buttonrow { display:flex; flex-wrap:wrap; gap:8px; margin-top:9px }
-    table { width:100%; border-collapse:collapse; background:#fff; border-radius:14px; overflow:hidden } th,td { text-align:left; padding:10px; border-bottom:1px solid var(--line); vertical-align:top } th { background:var(--soft); font-size:.9rem } tr:last-child td { border-bottom:none }
-    .installbox { background:#fffaf2; border:1px solid #e4d4ba; border-radius:var(--radius); padding:14px } code { background:var(--soft); padding:2px 5px; border-radius:7px }
-    @media(max-width:850px) { .mapgrid { grid-template-columns:1fr } #map { min-height:58vh } .route-list { max-height:none } }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roadbook Marken / Umbrien 2026</title>
+<meta name="theme-color" content="#253f36">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--bg:#f5f1e9;--card:#fff;--ink:#1d2328;--muted:#68727d;--green:#253f36;--red:#8f3d28;--line:#ded4c6;--soft:#ede3d5;--shadow:0 10px 28px rgba(0,0,0,.11);--r:18px}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}a{color:inherit}header{padding:30px 16px;background:linear-gradient(135deg,#253f36,#8f3d28);color:#fff}.wrap{max-width:1220px;margin:auto}h1{margin:0;font-size:clamp(2rem,6vw,4.3rem);line-height:1;letter-spacing:-.04em}h2{font-size:clamp(1.4rem,3vw,2.2rem);margin:0 0 14px}h3{margin:.2rem 0 .4rem}.sub{max-width:850px;font-size:1.05rem;opacity:.94}nav{position:sticky;top:0;z-index:999;background:rgba(245,241,233,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(12px);overflow:auto;white-space:nowrap}nav .wrap{display:flex;gap:8px;padding:10px 14px}nav a{text-decoration:none;font-weight:750;padding:8px 11px;border-radius:999px}nav a:hover{background:var(--soft)}main{padding:20px 14px 50px}section{margin:28px 0}.grid{display:grid;gap:14px}.two{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}.three{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}.card,.route-card,.hotel-card,.day-detail{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px}.muted{color:var(--muted)}.badge{display:inline-block;border-radius:999px;background:var(--green);color:#fff;padding:4px 9px;font-size:.82rem;font-weight:800;margin-right:5px}.badge.alt{background:var(--red)}.pillbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:7px 10px}#map{height:72vh;min-height:520px;border-radius:20px;border:1px solid var(--line);box-shadow:var(--shadow)}.route-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}.route-top{display:flex;align-items:center;gap:5px;flex-wrap:wrap;color:var(--muted);font-weight:700}.facts{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.facts span{background:var(--soft);border-radius:999px;padding:5px 9px;font-weight:750;font-size:.9rem}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}button,.actions a{border:0;border-radius:12px;background:var(--green);color:#fff;text-decoration:none;padding:9px 11px;font-weight:800;cursor:pointer;font-size:.92rem}.actions a:nth-child(2n),button.secondary{background:var(--red)}.actions a:last-child{background:#e9dfd0;color:#1d2328}summary{font-size:1.12rem;font-weight:900;cursor:pointer}.day-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:14px}.hotel-mini{border-left:4px solid var(--green);padding-left:10px;margin:8px 0}table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden}th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:var(--soft)}.notice{background:#fff8df;border:1px solid #e6d392;border-radius:16px;padding:14px}footer{border-top:1px solid var(--line);padding:24px 14px;color:var(--muted)}@media(max-width:700px){#map{height:62vh;min-height:410px}table,thead,tbody,tr,td,th{display:block}thead{display:none}td{border:0;padding:6px 10px}tr{border-bottom:1px solid var(--line);padding:8px 0}}
+</style>
 </head>
 <body>
-<header><div class="wrap"><h1>Motorradreise Italien 2026</h1><p class="subtitle">Interaktive Routenübersicht für Marken, Umbrien, Toskana und Rückreise. GPX-Tracks können angezeigt, einzeln heruntergeladen und als Web-App auf dem iPhone abgelegt werden.</p><div class="pillbar"><span class="pill">🏍️ Start 20.05.2026</span><span class="pill">🗺️ 19 GPX-Tracks</span><span class="pill">📱 App-Modus vorbereitet</span></div></div></header>
-<nav><div class="wrap"><a href="#karte">Karte</a><a href="#downloads">Downloads</a><a href="#app">iPhone-App-Modus</a><a href="#hotels">Hotels</a><a href="#notfall">Notfall</a></div></nav>
+<header><div class="wrap"><h1>Roadbook Marken / Umbrien 2026</h1><p class="sub">Version 17.05.2026 · Motorradreise vom 20.05. bis 31.05.2026 mit GPX-Tracks, Calimoto-Links, Hotels, Wetterlinks und getrenntem Bereich für Sehenswürdigkeiten.</p><div class="pillbar"><span class="pill">🏍️ 12 Reisetage</span><span class="pill">🗺️ 19 GPX-Tracks</span><span class="pill">📱 iPhone-Appmodus</span><span class="pill">🇮🇹 Marken · Umbrien · Toskana · Alpen</span></div></div></header>
+<nav><div class="wrap"><a href="#karte">Karte</a><a href="#roadbook">Roadbook</a><a href="#tage">Tage</a><a href="#hotels">Hotels</a><a href="#wetter">Wetter</a><a href="#besonderheiten">Besonderheiten</a><a href="#technik">Technik</a></div></nav>
 <main class="wrap">
-<section id="karte"><h2>Interaktive Kartenansicht</h2><div class="mapgrid"><div class="card route-list"><h3>GPX-Tracks</h3><p class="muted small">Haken setzen oder entfernen. Ein Klick auf „Zoom“ springt zur Route. Die Karte lädt OpenStreetMap-Kacheln aus dem Internet; die GPX-Dateien selbst liegen lokal im Paket.</p><div id="routeList"></div><div class="buttonrow"><button class="btn" id="showAll">Alle anzeigen</button><button class="btn secondary" id="hideAll">Alle ausblenden</button></div></div><div id="map"></div></div></section>
-<section id="downloads"><h2>GPX-Downloads</h2><div class="card"><table><thead><tr><th>Tag</th><th>Variante</th><th>Route</th><th>Länge</th><th>Download</th></tr></thead><tbody id="downloadRows"></tbody></table></div></section>
-<section id="app"><h2>App-Modus für iPhone</h2><div class="installbox"><p><strong>Server-Nutzung:</strong> kompletten Ordner auf deinen Webserver laden und die Seite in Safari öffnen. Dann über <strong>Teilen → Zum Home-Bildschirm</strong> hinzufügen.</p><p><strong>Lokal am iPhone:</strong> Die HTML-Datei lässt sich zwar öffnen, aber GPX-Fetch und App-Modus funktionieren lokal je nach iOS/Safari nicht zuverlässig. Für den echten App-Modus ist die Server-Variante die saubere Lösung.</p><p><strong>Offline:</strong> Nach dem ersten Laden speichert der Service Worker die Website-Dateien. Kartenkacheln von OpenStreetMap sind nur verfügbar, wenn sie vorher geladen wurden oder Internet besteht.</p></div></section>
-<section id="hotels"><h2>Hotels</h2><div class="card"><p class="muted">Hier können die finalen Hotels mit Adresse, Telefon, Buchungsnummer und Parkplatzhinweis ergänzt werden.</p></div></section>
-<section id="notfall"><h2>Notfall</h2><div class="grid two"><div class="card"><h3>Nummern</h3><ul><li>Europaweiter Notruf: <strong>112</strong></li><li>ADAC / Schutzbrief: eintragen</li><li>Auslandskrankenversicherung: eintragen</li></ul></div><div class="card"><h3>Täglich prüfen</h3><ul><li>Wetter / Gewitter</li><li>Passöffnungen</li><li>Garmin-Neuberechnung</li><li>Tankreichweite</li></ul></div></div></section>
-</main>
+<section id="karte"><h2>Interaktive GPX-Karte</h2><div id="map"></div><p class="muted">Die Karte lädt OpenStreetMap-Kacheln online. Die GPX-Dateien liegen im Paket und können direkt angezeigt oder heruntergeladen werden.</p></section>
+<section id="roadbook"><h2>Roadbook & GPX-Downloads</h2><div class="route-list">
+<article class="route-card" data-day="1" data-file="gpx/Tag 01 R1 - GAP-Tim-Huber.gpx">
+  <div class="route-top"><span class="badge">Tag 01</span><span class="badge alt">R1</span><span>Mi, 20.05.2026</span></div>
+  <h3>Tag 01 R1 - GAP-Tim-Huber</h3>
+  <p class="muted"><strong>München / GAP</strong> → <strong>Mühlbach</strong></p>
+  <p>M – GAP über BAB 96; von GAP über Leutaschtal und Ötztal zum Timmelsjoch; Einreise Italien, Jaufenpass nach Sterzing; weiter Richtung Süden über Würzjoch nach Mühlbach zum Gasthof Huber. Falls Huber nicht klappt: Raum Arraba als Alternative.</p>
+  <div class="facts"><span>301 km GPX</span><span>5,653 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 01 R1 - GAP-Tim-Huber.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 01 R1 - GAP-Tim-Huber.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-01-r1-gap-tim-huber-r-SDRHBenNmR" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/m%C3%BCnchen_deutschland_2867714" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/m%C3%BChlbach_italien_3171113" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="1" data-file="gpx/Tag 01 R2- GAP-Brenner-Huber.gpx">
+  <div class="route-top"><span class="badge">Tag 01</span><span class="badge alt">R2</span><span>Mi, 20.05.2026</span></div>
+  <h3>Tag 01 R2- GAP-Brenner-Huber</h3>
+  <p class="muted"><strong>München / GAP</strong> → <strong>Mühlbach</strong></p>
+  <p>Klassiker: von GAP über Brenner, dann Würzjoch und Gasthof Huber oder Alternativunterkunft.</p>
+  <div class="facts"><span>222 km GPX</span><span>4,202 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 01 R2- GAP-Brenner-Huber.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 01 R2- GAP-Brenner-Huber.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-01-r2-gap-brenner-huber-r-VIyyGCYAlH" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/m%C3%BCnchen_deutschland_2867714" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/m%C3%BChlbach_italien_3171113" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="2" data-file="gpx/Tag 02 R1 - Huber-Chioggia.gpx">
+  <div class="route-top"><span class="badge">Tag 02</span><span class="badge alt">R1</span><span>Do, 21.05.2026</span></div>
+  <h3>Tag 02 R1 - Huber-Chioggia</h3>
+  <p class="muted"><strong>Mühlbach</strong> → <strong>Chioggia</strong></p>
+  <p>Von Mühlbach südwärts durch die Dolomiten über Bassano del Grappa Richtung Venedig und weiter nach Chioggia, Hotel Sole.</p>
+  <div class="facts"><span>324 km GPX</span><span>6,324 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 02 R1 - Huber-Chioggia.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 02 R1 - Huber-Chioggia.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-02-r1-huber-chioggia-r-OlCEcVeZus" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/m%C3%BChlbach_italien_3171113" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/chioggia_italien_3179427" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="3" data-file="gpx/Tag 03 R1 - Chioggia-Loreto.gpx">
+  <div class="route-top"><span class="badge">Tag 03</span><span class="badge alt">R1</span><span>Fr, 22.05.2026</span></div>
+  <h3>Tag 03 R1 - Chioggia-Loreto</h3>
+  <p class="muted"><strong>Chioggia</strong> → <strong>Loreto</strong></p>
+  <p>Von Chioggia weiter nach Süden über San Marino an der Adriaküste entlang nach Loreto, Hotel San Francesco.</p>
+  <div class="facts"><span>307 km GPX</span><span>5,972 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 03 R1 - Chioggia-Loreto.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 03 R1 - Chioggia-Loreto.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-03-r1-chioggia-loreto-r-LdU3chf52i" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/chioggia_italien_3179427" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/loreto_italien_3174668" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="4" data-file="gpx/Tag 04 R1 - Loreto - Perugia.gpx">
+  <div class="route-top"><span class="badge">Tag 04</span><span class="badge alt">R1</span><span>Sa, 23.05.2026</span></div>
+  <h3>Tag 04 R1 - Loreto - Perugia</h3>
+  <p class="muted"><strong>Loreto</strong> → <strong>Perugia</strong></p>
+  <p>Von Loreto durch die Marken nach Perugia.</p>
+  <div class="facts"><span>266 km GPX</span><span>5,383 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 04 R1 - Loreto - Perugia.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 04 R1 - Loreto - Perugia.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-04-r1-loreto-perugia-r-ui75XxFjc9" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/loreto_italien_3174668" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/perugia_italien_3171173" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="5" data-file="gpx/Tag 05 Rund 01 - Assisi-Gubbio-Umbertide 001.gpx">
+  <div class="route-top"><span class="badge">Tag 05</span><span class="badge alt">Rund</span><span>So, 24.05.2026</span></div>
+  <h3>Tag 05 Rund 01 - Assisi-Gubbio-Umbertide 001</h3>
+  <p class="muted"><strong>Perugia</strong> → <strong>Perugia</strong></p>
+  <p>Perugia – Assisi – Gubbio – Umbertide – Perugia.</p>
+  <div class="facts"><span>186 km GPX</span><span>3,971 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 05 Rund 01 - Assisi-Gubbio-Umbertide 001.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 05 Rund 01 - Assisi-Gubbio-Umbertide 001.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-05-rund-01-assisi-gubbio-umbertide-001-r-VNkqFAbWTw" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/perugia_italien_3171173" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/perugia_italien_3171173" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="6" data-file="gpx/Tag 06 Rund 02 - Spoletto - Norcia.gpx">
+  <div class="route-top"><span class="badge">Tag 06</span><span class="badge alt">Rund</span><span>Mo, 25.05.2026</span></div>
+  <h3>Tag 06 Rund 02 - Spoletto - Norcia</h3>
+  <p class="muted"><strong>Perugia</strong> → <strong>Perugia</strong></p>
+  <p>Perugia – Spoleto – Ferentillo – Perugia.</p>
+  <div class="facts"><span>183 km GPX</span><span>3,427 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 06 Rund 02 - Spoletto - Norcia.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 06 Rund 02 - Spoletto - Norcia.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-06-rund-02-spoletto-norcia-r-zyzoAXsTtX" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/perugia_italien_3171173" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/perugia_italien_3171173" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="7" data-file="gpx/Tag 07 Rund 03 - Gran Sasso.gpx">
+  <div class="route-top"><span class="badge">Tag 07</span><span class="badge alt">Rund</span><span>Di, 26.05.2026</span></div>
+  <h3>Tag 07 Rund 03 - Gran Sasso</h3>
+  <p class="muted"><strong>Perugia</strong> → <strong>Perugia</strong></p>
+  <p>Perugia – Gran Sasso – Perugia.</p>
+  <div class="facts"><span>248 km GPX</span><span>4,640 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 07 Rund 03 - Gran Sasso.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 07 Rund 03 - Gran Sasso.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-07-rund-03-gran-sasso-r-qqHnjnHlVd" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/perugia_italien_3171173" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/perugia_italien_3171173" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="8" data-file="gpx/Tag 08 Rund 04 - Siena.gpx">
+  <div class="route-top"><span class="badge">Tag 08</span><span class="badge alt">Rund</span><span>Mi, 27.05.2026</span></div>
+  <h3>Tag 08 Rund 04 - Siena</h3>
+  <p class="muted"><strong>Perugia</strong> → <strong>Perugia</strong></p>
+  <p>Perugia – Val d’Orcia – Siena – Perugia.</p>
+  <div class="facts"><span>246 km GPX</span><span>5,203 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 08 Rund 04 - Siena.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 08 Rund 04 - Siena.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-08-rund-04-siena-r-SNXLaUS7Ij" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/perugia_italien_3171173" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/perugia_italien_3171173" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="9" data-file="gpx/Tag 09 R1 - Perugia-Montecantini.gpx">
+  <div class="route-top"><span class="badge">Tag 09</span><span class="badge alt">R1</span><span>Do, 28.05.2026</span></div>
+  <h3>Tag 09 R1 - Perugia-Montecantini</h3>
+  <p class="muted"><strong>Perugia</strong> → <strong>Montecatini Terme</strong></p>
+  <p>Von Perugia durch den Apennin Richtung Norden nach Montecatini Terme.</p>
+  <div class="facts"><span>294 km GPX</span><span>5,913 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 09 R1 - Perugia-Montecantini.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 09 R1 - Perugia-Montecantini.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-09-r1-perugia-montecantini-r-a1Xnor5WRx" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/perugia_italien_3171173" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/montecatini-terme_italien_3172394" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="9" data-file="gpx/Tag 09 R2 - Perugia -Padua.gpx">
+  <div class="route-top"><span class="badge">Tag 09</span><span class="badge alt">R2</span><span>Do, 28.05.2026</span></div>
+  <h3>Tag 09 R2 - Perugia -Padua</h3>
+  <p class="muted"><strong>Perugia</strong> → <strong>Padua</strong></p>
+  <p>Von Perugia nach Norden durch die Marken in den Raum Padua.</p>
+  <div class="facts"><span>346 km GPX</span><span>6,494 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 09 R2 - Perugia -Padua.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 09 R2 - Perugia -Padua.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-09-r2-perugia-padua-r-F5YsiUETCx" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/perugia_italien_3171173" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/padua_italien_3171728" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="10" data-file="gpx/Tag 10 R1 - MonteC-Brescia.gpx">
+  <div class="route-top"><span class="badge">Tag 10</span><span class="badge alt">R1</span><span>Fr, 29.05.2026</span></div>
+  <h3>Tag 10 R1 - MonteC-Brescia</h3>
+  <p class="muted"><strong>Montecatini Terme</strong> → <strong>Brescia</strong></p>
+  <p>Von Montecatini weiter durch den Apennin nordwestlich und dann bis Brescia.</p>
+  <div class="facts"><span>310 km GPX</span><span>6,276 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 10 R1 - MonteC-Brescia.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 10 R1 - MonteC-Brescia.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-10-r1-montec-brescia-r-Arr3hKBW9s" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/montecatini-terme_italien_3172394" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/brescia_italien_3181554" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="10" data-file="gpx/Tag 10 R2 - Padua-Huber.gpx">
+  <div class="route-top"><span class="badge">Tag 10</span><span class="badge alt">R2</span><span>Fr, 29.05.2026</span></div>
+  <h3>Tag 10 R2 - Padua-Huber</h3>
+  <p class="muted"><strong>Padua</strong> → <strong>Mühlbach</strong></p>
+  <p>Von Padua nach Mühlbach.</p>
+  <div class="facts"><span>260 km GPX</span><span>5,379 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 10 R2 - Padua-Huber.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 10 R2 - Padua-Huber.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-10-r2-padua-huber-r-8nThLtZ9vj" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/padua_italien_3171728" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/m%C3%BChlbach_italien_3171113" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="10" data-file="gpx/Tag 10 R3 - MonteC-Vicenza.gpx">
+  <div class="route-top"><span class="badge">Tag 10</span><span class="badge alt">R3</span><span>Fr, 29.05.2026</span></div>
+  <h3>Tag 10 R3 - MonteC-Vicenza</h3>
+  <p class="muted"><strong>Montecatini Terme</strong> → <strong>Vicenza</strong></p>
+  <p>Von Montecatini in den Raum Vicenza.</p>
+  <div class="facts"><span>269 km GPX</span><span>5,158 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 10 R3 - MonteC-Vicenza.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 10 R3 - MonteC-Vicenza.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-10-r3-montec-vicenza-r-ebHJXDFO44" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/montecatini-terme_italien_3172394" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/vicenza_italien_3164419" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="11" data-file="gpx/Tag 11 R1 - Brescia-Samnaun.gpx">
+  <div class="route-top"><span class="badge">Tag 11</span><span class="badge alt">R1</span><span>Sa, 30.05.2026</span></div>
+  <h3>Tag 11 R1 - Brescia-Samnaun</h3>
+  <p class="muted"><strong>Brescia</strong> → <strong>Samnaun</strong></p>
+  <p>Von Brescia über Lago di Iseo und Stilfserjoch nach Samnaun.</p>
+  <div class="facts"><span>274 km GPX</span><span>5,313 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 11 R1 - Brescia-Samnaun.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 11 R1 - Brescia-Samnaun.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-11-r1-brescia-samnaun-r-ObSBBjLb7K" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/brescia_italien_3181554" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/samnaun_schweiz_2658513" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="11" data-file="gpx/Tag 11 R2 - Huber-M.gpx">
+  <div class="route-top"><span class="badge">Tag 11</span><span class="badge alt">R2</span><span>Sa, 30.05.2026</span></div>
+  <h3>Tag 11 R2 - Huber-M</h3>
+  <p class="muted"><strong>Mühlbach</strong> → <strong>München</strong></p>
+  <p>Von Mühlbach nach München über Brenner und Achenpass.</p>
+  <div class="facts"><span>249 km GPX</span><span>4,152 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 11 R2 - Huber-M.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 11 R2 - Huber-M.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-11-r2-huber-m-r-2p83P8IZfZ" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/m%C3%BChlbach_italien_3171113" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/m%C3%BCnchen_deutschland_2867714" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="11" data-file="gpx/Tag 11 R3 - Vicenza-Huber.gpx">
+  <div class="route-top"><span class="badge">Tag 11</span><span class="badge alt">R3</span><span>Sa, 30.05.2026</span></div>
+  <h3>Tag 11 R3 - Vicenza-Huber</h3>
+  <p class="muted"><strong>Vicenza</strong> → <strong>Mühlbach</strong></p>
+  <p>Von Vicenza nach Mühlbach über Manghenpass durch die Dolomiten.</p>
+  <div class="facts"><span>277 km GPX</span><span>5,715 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 11 R3 - Vicenza-Huber.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 11 R3 - Vicenza-Huber.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-11-r3-vicenza-huber-r-KCqtF5NAF7" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/vicenza_italien_3164419" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/m%C3%BChlbach_italien_3171113" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="12" data-file="gpx/Tag 12 R1 - Samnaun-M.gpx">
+  <div class="route-top"><span class="badge">Tag 12</span><span class="badge alt">R1</span><span>So, 31.05.2026</span></div>
+  <h3>Tag 12 R1 - Samnaun-M</h3>
+  <p class="muted"><strong>Samnaun</strong> → <strong>München</strong></p>
+  <p>Von Samnaun über Hahntenjoch und Allgäu über Ammersee nach München.</p>
+  <div class="facts"><span>266 km GPX</span><span>4,175 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 12 R1 - Samnaun-M.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 12 R1 - Samnaun-M.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-12-r1-samnaun-m-r-kzsDZCy6NB" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/samnaun_schweiz_2658513" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/m%C3%BCnchen_deutschland_2867714" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article>
+<article class="route-card" data-day="12" data-file="gpx/Tag 12 R3 - Huber-M.gpx">
+  <div class="route-top"><span class="badge">Tag 12</span><span class="badge alt">R3</span><span>So, 31.05.2026</span></div>
+  <h3>Tag 12 R3 - Huber-M</h3>
+  <p class="muted"><strong>Mühlbach</strong> → <strong>München</strong></p>
+  <p>Von Mühlbach nach München über Brenner und Achenpass.</p>
+  <div class="facts"><span>249 km GPX</span><span>4,152 Punkte</span></div>
+  <div class="actions"><button onclick="focusRoute('gpx/Tag 12 R3 - Huber-M.gpx')">Auf Karte zeigen</button><a href="gpx/Tag 12 R3 - Huber-M.gpx" download>GPX</a><a href="https://calimoto.com/calimotour/tag-12-r3-huber-m-r-Bi2Aoetf0F" target="_blank" rel="noopener">Calimoto</a><a href="https://www.meteoblue.com/de/wetter/woche/m%C3%BChlbach_italien_3171113" target="_blank" rel="noopener">Wetter Start</a><a href="https://www.meteoblue.com/de/wetter/woche/m%C3%BCnchen_deutschland_2867714" target="_blank" rel="noopener">Wetter Ziel</a></div>
+</article></div></section>
+<section id="tage"><h2>Tagesansicht mit Besonderheiten</h2>
+<details class="day-detail" id="tag01">
+  <summary>Tag 01 – Mi, 20.05.2026</summary>
+  <div class="day-grid">
+    <div><h4>Roadbook</h4><ul><li><strong>R1:</strong> M – GAP über BAB 96; von GAP über Leutaschtal und Ötztal zum Timmelsjoch; Einreise Italien, Jaufenpass nach Sterzing; weiter Richtung Süden über Würzjoch nach Mühlbach zum Gasthof Huber. Falls Huber nicht klappt: Raum Arraba als Alternative. <span class='muted'>(301 km GPX)</span></li><li><strong>R2:</strong> Klassiker: von GAP über Brenner, dann Würzjoch und Gasthof Huber oder Alternativunterkunft. <span class='muted'>(222 km GPX)</span></li></ul></div>
+    <div><h4>Sehenswürdigkeiten & Besonderheiten</h4><ul><li>Leutaschtal und Ötztal als landschaftlich starker Alpenauftakt.</li><li>Timmelsjoch: hochalpine Grenzstraße, Öffnung/Wetter vor Abfahrt prüfen.</li><li>Jaufenpass und Würzjoch: kurvig, alpin, fahrerisch deutlich interessanter als reine Brennerroute.</li></ul></div>
+    <div><h4>Hotel / Übernachtung</h4><div class='hotel-mini'><strong>Gasthof Huber Mühlbach</strong><br><span class='muted'>Mühlbach / Südtirol – Übernachtung nach Alpenanreise; Alternativraum Arraba bei fehlender Verfügbarkeit.</span><br><a href='https://www.gasthof-huber.com/' target='_blank' rel='noopener'>Hotel öffnen</a> · <a href='https://www.google.com/maps/search/?api=1&query=Gasthof+Huber+Mühlbach+Mühlbach+/+Südtirol' target='_blank' rel='noopener'>Navigation</a></div></div>
+  </div>
+</details>
+<details class="day-detail" id="tag02">
+  <summary>Tag 02 – Do, 21.05.2026</summary>
+  <div class="day-grid">
+    <div><h4>Roadbook</h4><ul><li><strong>R1:</strong> Von Mühlbach südwärts durch die Dolomiten über Bassano del Grappa Richtung Venedig und weiter nach Chioggia, Hotel Sole. <span class='muted'>(324 km GPX)</span></li></ul></div>
+    <div><h4>Sehenswürdigkeiten & Besonderheiten</h4><ul><li>Dolomitenetappe Richtung Veneto.</li><li>Bassano del Grappa: Ponte degli Alpini und historische Altstadt als lohnender Pausenpunkt.</li><li>Chioggia: Lagunenstadt südlich von Venedig, abends gut zu Fuß erschließbar.</li></ul></div>
+    <div><h4>Hotel / Übernachtung</h4><div class='hotel-mini'><strong>Hotel Sole</strong><br><span class='muted'>Chioggia – Adria-/Lagunenstopp südlich von Venedig.</span><br><a href='http://www.hotel-sole.com/' target='_blank' rel='noopener'>Hotel öffnen</a> · <a href='https://www.google.com/maps/search/?api=1&query=Hotel+Sole+Chioggia' target='_blank' rel='noopener'>Navigation</a></div></div>
+  </div>
+</details>
+<details class="day-detail" id="tag03">
+  <summary>Tag 03 – Fr, 22.05.2026</summary>
+  <div class="day-grid">
+    <div><h4>Roadbook</h4><ul><li><strong>R1:</strong> Von Chioggia weiter nach Süden über San Marino an der Adriaküste entlang nach Loreto, Hotel San Francesco. <span class='muted'>(307 km GPX)</span></li></ul></div>
+    <div><h4>Sehenswürdigkeiten & Besonderheiten</h4><ul><li>Adriaküste als Verbindungsetappe Richtung Marken.</li><li>San Marino: Kleinstaat mit Höhenlage und Altstadt; Zeitbedarf bei Stopp einplanen.</li><li>Loreto: bekannter Wallfahrtsort mit markanter Basilika.</li></ul></div>
+    <div><h4>Hotel / Übernachtung</h4><div class='hotel-mini'><strong>Hotel San Francesco</strong><br><span class='muted'>Loreto – Übernachtung in Loreto, guter Ausgangspunkt nach den Marken.</span><br><a href='https://www.loretosanfrancescohotel.it/?utm_source=google_maps&amp;utm_medium=organic&amp;utm_campaign=mybusiness' target='_blank' rel='noopener'>Hotel öffnen</a> · <a href='https://www.google.com/maps/search/?api=1&query=Hotel+San+Francesco+Loreto' target='_blank' rel='noopener'>Navigation</a></div></div>
+  </div>
+</details>
+<details class="day-detail" id="tag04">
+  <summary>Tag 04 – Sa, 23.05.2026</summary>
+  <div class="day-grid">
+    <div><h4>Roadbook</h4><ul><li><strong>R1:</strong> Von Loreto durch die Marken nach Perugia. <span class='muted'>(266 km GPX)</span></li></ul></div>
+    <div><h4>Sehenswürdigkeiten & Besonderheiten</h4><ul><li>Marken: hügelige, weniger überlaufene Motorradlandschaft.</li><li>Übergang von Küste/Marken nach Umbrien.</li><li>Perugia: historische Altstadt und zentrale Basis für mehrere Rundtouren.</li></ul></div>
+    <div><h4>Hotel / Übernachtung</h4><div class='hotel-mini'><strong>Hotel Giò Wine e Jazz Area</strong><br><span class='muted'>Perugia – Basisquartier für Umbrien, Marken, Gran Sasso und Toskana.</span><br><a href='https://www.hotelgio.it/?utm_source=google&amp;utm_medium=mybusiness&amp;utm_campaign=mybusiness&amp;utm_content=gmb_site_link' target='_blank' rel='noopener'>Hotel öffnen</a> · <a href='https://www.google.com/maps/search/?api=1&query=Hotel+Giò+Wine+e+Jazz+Area+Perugia' target='_blank' rel='noopener'>Navigation</a></div></div>
+  </div>
+</details>
+<details class="day-detail" id="tag05">
+  <summary>Tag 05 – So, 24.05.2026</summary>
+  <div class="day-grid">
+    <div><h4>Roadbook</h4><ul><li><strong>Rund:</strong> Perugia – Assisi – Gubbio – Umbertide – Perugia. <span class='muted'>(186 km GPX)</span></li></ul></div>
+    <div><h4>Sehenswürdigkeiten & Besonderheiten</h4><ul><li>Assisi: UNESCO-Welterbe und einer der wichtigsten Orte Umbriens.</li><li>Gubbio: mittelalterliche Stadt mit sehr geschlossenem Stadtbild.</li><li>Umbertide: ruhigerer Abschnitt zurück Richtung Perugia.</li></ul></div>
+    <div><h4>Hotel / Übernachtung</h4><div class='hotel-mini'><strong>Hotel Giò Wine e Jazz Area</strong><br><span class='muted'>Perugia – Basisquartier.</span><br><a href='https://www.hotelgio.it/?utm_source=google&amp;utm_medium=mybusiness&amp;utm_campaign=mybusiness&amp;utm_content=gmb_site_link' target='_blank' rel='noopener'>Hotel öffnen</a> · <a href='https://www.google.com/maps/search/?api=1&query=Hotel+Giò+Wine+e+Jazz+Area+Perugia' target='_blank' rel='noopener'>Navigation</a></div></div>
+  </div>
+</details>
+<details class="day-detail" id="tag06">
+  <summary>Tag 06 – Mo, 25.05.2026</summary>
+  <div class="day-grid">
+    <div><h4>Roadbook</h4><ul><li><strong>Rund:</strong> Perugia – Spoleto – Ferentillo – Perugia. <span class='muted'>(183 km GPX)</span></li></ul></div>
+    <div><h4>Sehenswürdigkeiten & Besonderheiten</h4><ul><li>Spoleto: Altstadt und landschaftlicher Einstieg in die Valnerina.</li><li>Ferentillo/Valnerina: enge Täler, Felslandschaft und kurvige Straßen.</li><li>Norcia-Region: nach Erdbeben teils weiterhin geprägtes Gebiet; Straßenstatus beachten.</li></ul></div>
+    <div><h4>Hotel / Übernachtung</h4><div class='hotel-mini'><strong>Hotel Giò Wine e Jazz Area</strong><br><span class='muted'>Perugia – Basisquartier.</span><br><a href='https://www.hotelgio.it/?utm_source=google&amp;utm_medium=mybusiness&amp;utm_campaign=mybusiness&amp;utm_content=gmb_site_link' target='_blank' rel='noopener'>Hotel öffnen</a> · <a href='https://www.google.com/maps/search/?api=1&query=Hotel+Giò+Wine+e+Jazz+Area+Perugia' target='_blank' rel='noopener'>Navigation</a></div></div>
+  </div>
+</details>
+<details class="day-detail" id="tag07">
+  <summary>Tag 07 – Di, 26.05.2026</summary>
+  <div class="day-grid">
+    <div><h4>Roadbook</h4><ul><li><strong>Rund:</strong> Perugia – Gran Sasso – Perugia. <span class='muted'>(248 km GPX)</span></li></ul></div>
+    <div><h4>Sehenswürdigkeiten & Besonderheiten</h4><ul><li>Gran Sasso: höchstes Massiv des Apennin.</li><li>Campo Imperatore: bei passender Streckenführung einer der eindrucksvollsten Hochplateau-Bereiche Italiens.</li><li>Wetterumschwung in Hochlagen möglich; Gewitterrisiko prüfen.</li></ul></div>
+    <div><h4>Hotel / Übernachtung</h4><div class='hotel-mini'><strong>Hotel Giò Wine e Jazz Area</strong><br><span class='muted'>Perugia – Basisquartier.</span><br><a href='https://www.hotelgio.it/?utm_source=google&amp;utm_medium=mybusiness&amp;utm_campaign=mybusiness&amp;utm_content=gmb_site_link' target='_blank' rel='noopener'>Hotel öffnen</a> · <a href='https://www.google.com/maps/search/?api=1&query=Hotel+Giò+Wine+e+Jazz+Area+Perugia' target='_blank' rel='noopener'>Navigation</a></div></div>
+  </div>
+</details>
+<details class="day-detail" id="tag08">
+  <summary>Tag 08 – Mi, 27.05.2026</summary>
+  <div class="day-grid">
+    <div><h4>Roadbook</h4><ul><li><strong>Rund:</strong> Perugia – Val d’Orcia – Siena – Perugia. <span class='muted'>(246 km GPX)</span></li></ul></div>
+    <div><h4>Sehenswürdigkeiten & Besonderheiten</h4><ul><li>Val d’Orcia: klassische Toskana-Landschaft mit Hügeln und Zypressen.</li><li>Siena: historisches Zentrum, touristisch stark frequentiert.</li><li>Fotostopps besser außerhalb der engen Altstadtbereiche planen.</li></ul></div>
+    <div><h4>Hotel / Übernachtung</h4><div class='hotel-mini'><strong>Hotel Giò Wine e Jazz Area</strong><br><span class='muted'>Perugia – Basisquartier.</span><br><a href='https://www.hotelgio.it/?utm_source=google&amp;utm_medium=mybusiness&amp;utm_campaign=mybusiness&amp;utm_content=gmb_site_link' target='_blank' rel='noopener'>Hotel öffnen</a> · <a href='https://www.google.com/maps/search/?api=1&query=Hotel+Giò+Wine+e+Jazz+Area+Perugia' target='_blank' rel='noopener'>Navigation</a></div></div>
+  </div>
+</details>
+<details class="day-detail" id="tag09">
+  <summary>Tag 09 – Do, 28.05.2026</summary>
+  <div class="day-grid">
+    <div><h4>Roadbook</h4><ul><li><strong>R1:</strong> Von Perugia durch den Apennin Richtung Norden nach Montecatini Terme. <span class='muted'>(294 km GPX)</span></li><li><strong>R2:</strong> Von Perugia nach Norden durch die Marken in den Raum Padua. <span class='muted'>(346 km GPX)</span></li></ul></div>
+    <div><h4>Sehenswürdigkeiten & Besonderheiten</h4><ul><li>Apennin-Nordroute mit kurvigen Abschnitten.</li><li>Montecatini Terme: klassischer Kurort in der Toskana.</li><li>Padua-Alternative: längere, direktere Nordverschiebung.</li></ul></div>
+    <div><h4>Hotel / Übernachtung</h4><div class='hotel-mini'><strong>Hotel Giò Wine e Jazz Area</strong><br><span class='muted'>Perugia – Abfahrtstag Richtung Montecatini oder Padua.</span><br><a href='https://www.hotelgio.it/?utm_source=google&amp;utm_medium=mybusiness&amp;utm_campaign=mybusiness&amp;utm_content=gmb_site_link' target='_blank' rel='noopener'>Hotel öffnen</a> · <a href='https://www.google.com/maps/search/?api=1&query=Hotel+Giò+Wine+e+Jazz+Area+Perugia' target='_blank' rel='noopener'>Navigation</a></div></div>
+  </div>
+</details>
+<details class="day-detail" id="tag10">
+  <summary>Tag 10 – Fr, 29.05.2026</summary>
+  <div class="day-grid">
+    <div><h4>Roadbook</h4><ul><li><strong>R1:</strong> Von Montecatini weiter durch den Apennin nordwestlich und dann bis Brescia. <span class='muted'>(310 km GPX)</span></li><li><strong>R2:</strong> Von Padua nach Mühlbach. <span class='muted'>(260 km GPX)</span></li><li><strong>R3:</strong> Von Montecatini in den Raum Vicenza. <span class='muted'>(269 km GPX)</span></li></ul></div>
+    <div><h4>Sehenswürdigkeiten & Besonderheiten</h4><ul><li>Brescia-Route: Übergang Richtung Lombardei und Alpen.</li><li>Vicenza-Alternative: gute Zwischenlösung vor Dolomiten-/Alpenrückfahrt.</li><li>Padua–Mühlbach: Transfer zurück in den Alpenraum.</li></ul></div>
+    <div><h4>Hotel / Übernachtung</h4><p class="muted">Noch kein Hotel hinterlegt.</p></div>
+  </div>
+</details>
+<details class="day-detail" id="tag11">
+  <summary>Tag 11 – Sa, 30.05.2026</summary>
+  <div class="day-grid">
+    <div><h4>Roadbook</h4><ul><li><strong>R1:</strong> Von Brescia über Lago di Iseo und Stilfserjoch nach Samnaun. <span class='muted'>(274 km GPX)</span></li><li><strong>R2:</strong> Von Mühlbach nach München über Brenner und Achenpass. <span class='muted'>(249 km GPX)</span></li><li><strong>R3:</strong> Von Vicenza nach Mühlbach über Manghenpass durch die Dolomiten. <span class='muted'>(277 km GPX)</span></li></ul></div>
+    <div><h4>Sehenswürdigkeiten & Besonderheiten</h4><ul><li>Lago d’Iseo: landschaftlich reizvoller, weniger überlaufen als Gardasee.</li><li>Stilfserjoch: legendärer Pass, Öffnung und Wetter zwingend prüfen.</li><li>Manghenpass/Dolomiten: fahrerisch schön, aber wetter- und belagsabhängig.</li></ul></div>
+    <div><h4>Hotel / Übernachtung</h4><p class="muted">Noch kein Hotel hinterlegt.</p></div>
+  </div>
+</details>
+<details class="day-detail" id="tag12">
+  <summary>Tag 12 – So, 31.05.2026</summary>
+  <div class="day-grid">
+    <div><h4>Roadbook</h4><ul><li><strong>R1:</strong> Von Samnaun über Hahntenjoch und Allgäu über Ammersee nach München. <span class='muted'>(266 km GPX)</span></li><li><strong>R3:</strong> Von Mühlbach nach München über Brenner und Achenpass. <span class='muted'>(249 km GPX)</span></li></ul></div>
+    <div><h4>Sehenswürdigkeiten & Besonderheiten</h4><ul><li>Hahntenjoch: schöne Rückreisevariante durch Tirol, wetterabhängig.</li><li>Allgäu/Ammersee: entspanntere Schlussstrecke Richtung München.</li><li>Brenner/Achenpass: zuverlässigere Alternative, falls Wetter kritisch ist.</li></ul></div>
+    <div><h4>Hotel / Übernachtung</h4><p class="muted">Noch kein Hotel hinterlegt.</p></div>
+  </div>
+</details></section>
+<section id="hotels"><h2>Hotels</h2><div class="grid two">
+<div class="hotel-card">
+  <h3>Gasthof Huber Mühlbach</h3>
+  <p class="muted">Mühlbach / Südtirol · Tag 01</p>
+  <p>Übernachtung nach Alpenanreise; Alternativraum Arraba bei fehlender Verfügbarkeit.</p>
+  <div class="actions"><a href="https://www.gasthof-huber.com/" target="_blank" rel="noopener">Hotel-Webseite</a><a href="https://www.google.com/maps/search/?api=1&query=Gasthof+Huber+Mühlbach+Mühlbach+/+Südtirol" target="_blank" rel="noopener">Google Maps</a></div>
+</div>
+<div class="hotel-card">
+  <h3>Hotel Sole</h3>
+  <p class="muted">Chioggia · Tag 02</p>
+  <p>Adria-/Lagunenstopp südlich von Venedig.</p>
+  <div class="actions"><a href="http://www.hotel-sole.com/" target="_blank" rel="noopener">Hotel-Webseite</a><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Sole+Chioggia" target="_blank" rel="noopener">Google Maps</a></div>
+</div>
+<div class="hotel-card">
+  <h3>Hotel San Francesco</h3>
+  <p class="muted">Loreto · Tag 03</p>
+  <p>Übernachtung in Loreto, guter Ausgangspunkt nach den Marken.</p>
+  <div class="actions"><a href="https://www.loretosanfrancescohotel.it/?utm_source=google_maps&amp;utm_medium=organic&amp;utm_campaign=mybusiness" target="_blank" rel="noopener">Hotel-Webseite</a><a href="https://www.google.com/maps/search/?api=1&query=Hotel+San+Francesco+Loreto" target="_blank" rel="noopener">Google Maps</a></div>
+</div>
+<div class="hotel-card">
+  <h3>Hotel Giò Wine e Jazz Area</h3>
+  <p class="muted">Perugia · Tag 04, 05, 06, 07, 08, 09</p>
+  <p>Basisquartier für Umbrien, Marken, Gran Sasso und Toskana.</p>
+  <div class="actions"><a href="https://www.hotelgio.it/?utm_source=google&amp;utm_medium=mybusiness&amp;utm_campaign=mybusiness&amp;utm_content=gmb_site_link" target="_blank" rel="noopener">Hotel-Webseite</a><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Giò+Wine+e+Jazz+Area+Perugia" target="_blank" rel="noopener">Google Maps</a></div>
+</div></div><div class="notice"><strong>Hinweis:</strong> Parkplatz-/Garagenangaben und Check-in-Zeiten vor Abfahrt separat aus Buchung oder Hotelbestätigung prüfen.</div></section>
+<section id="wetter"><h2>Wetterlinks</h2><div class="card"><table><thead><tr><th>Ort</th><th>Link</th><th>Relevanz</th></tr></thead><tbody>
+<tr><td>München</td><td><a href="https://www.meteoblue.com/de/wetter/woche/m%C3%BCnchen_deutschland_2867714" target="_blank" rel="noopener">Meteoblue öffnen</a></td><td>Start-/Ziel- oder wichtiger Zwischenpunkt</td></tr><tr><td>GAP</td><td><a href="https://www.meteoblue.com/de/wetter/woche/garmisch-partenkirchen_deutschland_2922530" target="_blank" rel="noopener">Meteoblue öffnen</a></td><td>Start-/Ziel- oder wichtiger Zwischenpunkt</td></tr><tr><td>Mühlbach</td><td><a href="https://www.meteoblue.com/de/wetter/woche/m%C3%BChlbach_italien_3171113" target="_blank" rel="noopener">Meteoblue öffnen</a></td><td>Start-/Ziel- oder wichtiger Zwischenpunkt</td></tr><tr><td>Chioggia</td><td><a href="https://www.meteoblue.com/de/wetter/woche/chioggia_italien_3179427" target="_blank" rel="noopener">Meteoblue öffnen</a></td><td>Start-/Ziel- oder wichtiger Zwischenpunkt</td></tr><tr><td>Loreto</td><td><a href="https://www.meteoblue.com/de/wetter/woche/loreto_italien_3174668" target="_blank" rel="noopener">Meteoblue öffnen</a></td><td>Start-/Ziel- oder wichtiger Zwischenpunkt</td></tr><tr><td>Perugia</td><td><a href="https://www.meteoblue.com/de/wetter/woche/perugia_italien_3171173" target="_blank" rel="noopener">Meteoblue öffnen</a></td><td>Start-/Ziel- oder wichtiger Zwischenpunkt</td></tr><tr><td>Montecatini Terme</td><td><a href="https://www.meteoblue.com/de/wetter/woche/montecatini-terme_italien_3172394" target="_blank" rel="noopener">Meteoblue öffnen</a></td><td>Start-/Ziel- oder wichtiger Zwischenpunkt</td></tr><tr><td>Padua</td><td><a href="https://www.meteoblue.com/de/wetter/woche/padua_italien_3171728" target="_blank" rel="noopener">Meteoblue öffnen</a></td><td>Start-/Ziel- oder wichtiger Zwischenpunkt</td></tr><tr><td>Brescia</td><td><a href="https://www.meteoblue.com/de/wetter/woche/brescia_italien_3181554" target="_blank" rel="noopener">Meteoblue öffnen</a></td><td>Start-/Ziel- oder wichtiger Zwischenpunkt</td></tr><tr><td>Vicenza</td><td><a href="https://www.meteoblue.com/de/wetter/woche/vicenza_italien_3164419" target="_blank" rel="noopener">Meteoblue öffnen</a></td><td>Start-/Ziel- oder wichtiger Zwischenpunkt</td></tr><tr><td>Samnaun</td><td><a href="https://www.meteoblue.com/de/wetter/woche/samnaun_schweiz_2658513" target="_blank" rel="noopener">Meteoblue öffnen</a></td><td>Start-/Ziel- oder wichtiger Zwischenpunkt</td></tr>
+</tbody></table></div><p class="notice">Für Timmelsjoch, Stilfserjoch, Hahntenjoch, Manghenpass und Gran-Sasso-Hochlagen am Fahrtag zusätzlich Straßensperren und Passöffnungen prüfen.</p></section>
+<section id="besonderheiten"><h2>Sehenswürdigkeiten & Besonderheiten</h2><div class="grid two">
+<div class="card"><h3>Alpenpässe</h3><p>Timmelsjoch, Jaufenpass, Würzjoch, Stilfserjoch, Hahntenjoch und Manghenpass sind fahrerisch starke, aber wetterabhängige Abschnitte. Im Mai/Juni können Kälte, Restschnee oder Sperren relevant sein.</p></div>
+<div class="card"><h3>Dolomiten</h3><p>Würzjoch, Arraba-Alternative und Dolomitenquerungen bieten hohe landschaftliche Qualität, erfordern aber saubere Zeitplanung und Wettercheck.</p></div>
+<div class="card"><h3>Chioggia</h3><p>Lagunenstadt südlich von Venedig. Für die Reise gut geeignet, weil weniger überlaufen und abends kompakt zu Fuß erreichbar.</p></div>
+<div class="card"><h3>Loreto & Marken</h3><p>Loreto ist ein bekannter Wallfahrtsort; die Marken bieten hügelige, kurvige und im Vergleich zur Toskana oft ruhigere Motorradstrecken.</p></div>
+<div class="card"><h3>Assisi, Gubbio, Perugia</h3><p>Umbriens Städte sind kulturelle Schwerpunkte der Reise. Altstadtzufahrten und Parkmöglichkeiten vorher beachten.</p></div>
+<div class="card"><h3>Gran Sasso</h3><p>Höchstes Massiv des Apennin. Sehr lohnend bei stabilem Wetter; bei Gewitter- oder Kaltfrontlage nicht unterschätzen.</p></div>
+<div class="card"><h3>Val d’Orcia & Siena</h3><p>Klassische Toskana-Landschaft. Fahrerisch eher Genuss- und Panoramaroute; touristische Hotspots einplanen.</p></div>
+<div class="card"><h3>Lago d’Iseo</h3><p>Auf der Brescia–Samnaun-Variante ein landschaftlich starker Abschnitt und weniger naheliegend als die Gardasee-Route.</p></div>
+</div></section>
+<section id="technik"><h2>GitHub / iPhone / Offline</h2><div class="card"><ul><li>Für GitHub Pages alle Dateien und Ordner aus diesem Paket ins Repository laden.</li><li>iPhone: Safari öffnen → Teilen → Zum Home-Bildschirm.</li><li>Die Seite und GPX-Dateien werden vom Service Worker gecacht.</li><li>Kartenkacheln und aktuelle Wetterseiten brauchen Internet.</li><li>Nach Updates auf GitHub auf dem iPhone ggf. Seite neu laden oder App einmal schließen/öffnen.</li></ul></div></section>
+</main><footer><div class="wrap">Roadbook Marken / Umbrien 2026 · Stand 17.05.2026 · Statische Web-App für GitHub Pages.</div></footer>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const ROUTES = [
-  {
-    "day": 1,
-    "variant": "R1",
-    "name": "Tag 01 R1 - GAP-Tim-Huber",
-    "file": "gpx/tag-01-r1-gap-tim-huber.gpx",
-    "km": 301,
-    "points": 5653,
-    "start": [
-      47.50071818009019,
-      11.101725306361914
-    ],
-    "end": [
-      46.84778904542327,
-      11.9821622595191
-    ]
-  },
-  {
-    "day": 1,
-    "variant": "R2",
-    "name": "Tag 01 R2- GAP-Brenner-Huber",
-    "file": "gpx/tag-01-r2-gap-brenner-huber.gpx",
-    "km": 222,
-    "points": 4202,
-    "start": [
-      47.50071818009019,
-      11.101725306361914
-    ],
-    "end": [
-      46.84778904542327,
-      11.9821622595191
-    ]
-  },
-  {
-    "day": 2,
-    "variant": "R1",
-    "name": "Tag 02 R1 - Huber-Chioggia",
-    "file": "gpx/tag-02-r1-huber-chioggia.gpx",
-    "km": 324,
-    "points": 6324,
-    "start": [
-      46.84778904542327,
-      11.9821622595191
-    ],
-    "end": [
-      45.198580948635936,
-      12.299836138263345
-    ]
-  },
-  {
-    "day": 3,
-    "variant": "R1",
-    "name": "Tag 03 R1 - Chioggia-Loreto",
-    "file": "gpx/tag-03-r1-chioggia-loreto.gpx",
-    "km": 307,
-    "points": 5972,
-    "start": [
-      45.200090780854225,
-      12.26510614156723
-    ],
-    "end": [
-      43.436326794326305,
-      13.608737038448453
-    ]
-  },
-  {
-    "day": 4,
-    "variant": "R1",
-    "name": "Tag 04 R1 - Loreto - Perugia",
-    "file": "gpx/tag-04-r1-loreto-perugia.gpx",
-    "km": 266,
-    "points": 5383,
-    "start": [
-      43.436326794326305,
-      13.608737038448453
-    ],
-    "end": [
-      43.112482242286205,
-      12.377589270472527
-    ]
-  },
-  {
-    "day": 5,
-    "variant": "Rundtour",
-    "name": "Tag 05 Rund 01 - Assisi-Gubbio-Umbertide 001",
-    "file": "gpx/tag-05-rund-01-assisi-gubbio-umbertide-001.gpx",
-    "km": 186,
-    "points": 3971,
-    "start": [
-      43.112482242286205,
-      12.377589270472527
-    ],
-    "end": [
-      43.112482242286205,
-      12.377589270472527
-    ]
-  },
-  {
-    "day": 6,
-    "variant": "Rundtour",
-    "name": "Tag 06 Rund 02 - Spoletto - Norcia",
-    "file": "gpx/tag-06-rund-02-spoletto-norcia.gpx",
-    "km": 183,
-    "points": 3427,
-    "start": [
-      43.112482242286205,
-      12.377589270472527
-    ],
-    "end": [
-      43.112482242286205,
-      12.377589270472527
-    ]
-  },
-  {
-    "day": 7,
-    "variant": "Rundtour",
-    "name": "Tag 07 Rund 03 - Gran Sasso",
-    "file": "gpx/tag-07-rund-03-gran-sasso.gpx",
-    "km": 248,
-    "points": 4640,
-    "start": [
-      43.112482242286205,
-      12.377589270472527
-    ],
-    "end": [
-      43.112482242286205,
-      12.377589270472527
-    ]
-  },
-  {
-    "day": 8,
-    "variant": "Rundtour",
-    "name": "Tag 08 Rund 04 - Siena",
-    "file": "gpx/tag-08-rund-04-siena.gpx",
-    "km": 246,
-    "points": 5203,
-    "start": [
-      43.112482242286205,
-      12.377589270472527
-    ],
-    "end": [
-      43.112482242286205,
-      12.377589270472527
-    ]
-  },
-  {
-    "day": 9,
-    "variant": "R1",
-    "name": "Tag 09 R1 - Perugia-Montecantini",
-    "file": "gpx/tag-09-r1-perugia-montecantini.gpx",
-    "km": 294,
-    "points": 5913,
-    "start": [
-      43.112482242286205,
-      12.377589270472527
-    ],
-    "end": [
-      43.88066849671304,
-      10.777339534834027
-    ]
-  },
-  {
-    "day": 9,
-    "variant": "R2",
-    "name": "Tag 09 R2 - Perugia -Padua",
-    "file": "gpx/tag-09-r2-perugia-padua.gpx",
-    "km": 346,
-    "points": 6494,
-    "start": [
-      43.112482242286205,
-      12.377589270472527
-    ],
-    "end": [
-      45.41177272796631,
-      11.863946914672852
-    ]
-  },
-  {
-    "day": 10,
-    "variant": "R1",
-    "name": "Tag 10 R1 - MonteC-Brescia",
-    "file": "gpx/tag-10-r1-montec-brescia.gpx",
-    "km": 310,
-    "points": 6276,
-    "start": [
-      43.88066849671304,
-      10.777339534834027
-    ],
-    "end": [
-      45.561004634946585,
-      10.135745834559202
-    ]
-  },
-  {
-    "day": 10,
-    "variant": "R2",
-    "name": "Tag 10 R2 - Padua-Huber",
-    "file": "gpx/tag-10-r2-padua-huber.gpx",
-    "km": 260,
-    "points": 5379,
-    "start": [
-      45.41177272796631,
-      11.863946914672852
-    ],
-    "end": [
-      46.84778904542327,
-      11.9821622595191
-    ]
-  },
-  {
-    "day": 10,
-    "variant": "R3",
-    "name": "Tag 10 R3 - MonteC-Vicenza",
-    "file": "gpx/tag-10-r3-montec-vicenza.gpx",
-    "km": 269,
-    "points": 5158,
-    "start": [
-      43.88066849671304,
-      10.777339534834027
-    ],
-    "end": [
-      45.55026054382324,
-      11.550815105438232
-    ]
-  },
-  {
-    "day": 11,
-    "variant": "R1",
-    "name": "Tag 11 R1 - Brescia-Samnaun",
-    "file": "gpx/tag-11-r1-brescia-samnaun.gpx",
-    "km": 274,
-    "points": 5313,
-    "start": [
-      45.561004634946585,
-      10.135745834559202
-    ],
-    "end": [
-      46.94627523422241,
-      10.362811088562012
-    ]
-  },
-  {
-    "day": 11,
-    "variant": "R2",
-    "name": "Tag 11 R2 - Huber-M",
-    "file": "gpx/tag-11-r2-huber-m.gpx",
-    "km": 249,
-    "points": 4152,
-    "start": [
-      46.84778904542327,
-      11.9821622595191
-    ],
-    "end": [
-      48.08923959732056,
-      11.594524383544922
-    ]
-  },
-  {
-    "day": 11,
-    "variant": "R3",
-    "name": "Tag 11 R3 - Vicenza-Huber",
-    "file": "gpx/tag-11-r3-vicenza-huber.gpx",
-    "km": 277,
-    "points": 5715,
-    "start": [
-      45.55026054382324,
-      11.550815105438232
-    ],
-    "end": [
-      46.84778904542327,
-      11.9821622595191
-    ]
-  },
-  {
-    "day": 12,
-    "variant": "R1",
-    "name": "Tag 12 R1 - Samnaun-M",
-    "file": "gpx/tag-12-r1-samnaun-m.gpx",
-    "km": 266,
-    "points": 4175,
-    "start": [
-      46.94627523422241,
-      10.362811088562012
-    ],
-    "end": [
-      48.08923959732056,
-      11.594524383544922
-    ]
-  },
-  {
-    "day": 12,
-    "variant": "R3",
-    "name": "Tag 12 R3 - Huber-M",
-    "file": "gpx/tag-12-r3-huber-m.gpx",
-    "km": 249,
-    "points": 4152,
-    "start": [
-      46.84778904542327,
-      11.9821622595191
-    ],
-    "end": [
-      48.08923959732056,
-      11.594524383544922
-    ]
-  }
-];
-const map = L.map('map', { preferCanvas:true }).setView([43.6, 12.5], 6);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '&copy; OpenStreetMap-Mitwirkende' }).addTo(map);
-const layers = new Map();
-const boundsAll = L.latLngBounds();
-const colors = ['#245c4f','#9b3d22','#1d4ed8','#7c3aed','#b45309','#be123c','#047857','#0f766e','#4338ca','#a16207'];
-function esc(s) { return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-function parseGPX(xmlText) {
-  const xml = new DOMParser().parseFromString(xmlText,'application/xml');
-  const pts = [...xml.getElementsByTagName('trkpt'), ...xml.getElementsByTagName('rtept')]
-    .map(p => [parseFloat(p.getAttribute('lat')), parseFloat(p.getAttribute('lon'))])
-    .filter(p => Number.isFinite(p[0]) && Number.isFinite(p[1]));
-  return pts;
+const ROUTES=[{"day": 1, "date": "Mi, 20.05.2026", "variant": "R1", "file": "Tag 01 R1 - GAP-Tim-Huber.gpx", "title": "Tag 01 R1 - GAP-Tim-Huber", "start": "München / GAP", "end": "Mühlbach", "description": "M – GAP über BAB 96; von GAP über Leutaschtal und Ötztal zum Timmelsjoch; Einreise Italien, Jaufenpass nach Sterzing; weiter Richtung Süden über Würzjoch nach Mühlbach zum Gasthof Huber. Falls Huber nicht klappt: Raum Arraba als Alternative.", "calimoto": "https://calimoto.com/calimotour/tag-01-r1-gap-tim-huber-r-SDRHBenNmR", "km": 301, "points": 5653}, {"day": 1, "date": "Mi, 20.05.2026", "variant": "R2", "file": "Tag 01 R2- GAP-Brenner-Huber.gpx", "title": "Tag 01 R2- GAP-Brenner-Huber", "start": "München / GAP", "end": "Mühlbach", "description": "Klassiker: von GAP über Brenner, dann Würzjoch und Gasthof Huber oder Alternativunterkunft.", "calimoto": "https://calimoto.com/calimotour/tag-01-r2-gap-brenner-huber-r-VIyyGCYAlH", "km": 222, "points": 4202}, {"day": 2, "date": "Do, 21.05.2026", "variant": "R1", "file": "Tag 02 R1 - Huber-Chioggia.gpx", "title": "Tag 02 R1 - Huber-Chioggia", "start": "Mühlbach", "end": "Chioggia", "description": "Von Mühlbach südwärts durch die Dolomiten über Bassano del Grappa Richtung Venedig und weiter nach Chioggia, Hotel Sole.", "calimoto": "https://calimoto.com/calimotour/tag-02-r1-huber-chioggia-r-OlCEcVeZus", "km": 324, "points": 6324}, {"day": 3, "date": "Fr, 22.05.2026", "variant": "R1", "file": "Tag 03 R1 - Chioggia-Loreto.gpx", "title": "Tag 03 R1 - Chioggia-Loreto", "start": "Chioggia", "end": "Loreto", "description": "Von Chioggia weiter nach Süden über San Marino an der Adriaküste entlang nach Loreto, Hotel San Francesco.", "calimoto": "https://calimoto.com/calimotour/tag-03-r1-chioggia-loreto-r-LdU3chf52i", "km": 307, "points": 5972}, {"day": 4, "date": "Sa, 23.05.2026", "variant": "R1", "file": "Tag 04 R1 - Loreto - Perugia.gpx", "title": "Tag 04 R1 - Loreto - Perugia", "start": "Loreto", "end": "Perugia", "description": "Von Loreto durch die Marken nach Perugia.", "calimoto": "https://calimoto.com/calimotour/tag-04-r1-loreto-perugia-r-ui75XxFjc9", "km": 266, "points": 5383}, {"day": 5, "date": "So, 24.05.2026", "variant": "Rund", "file": "Tag 05 Rund 01 - Assisi-Gubbio-Umbertide 001.gpx", "title": "Tag 05 Rund 01 - Assisi-Gubbio-Umbertide 001", "start": "Perugia", "end": "Perugia", "description": "Perugia – Assisi – Gubbio – Umbertide – Perugia.", "calimoto": "https://calimoto.com/calimotour/tag-05-rund-01-assisi-gubbio-umbertide-001-r-VNkqFAbWTw", "km": 186, "points": 3971}, {"day": 6, "date": "Mo, 25.05.2026", "variant": "Rund", "file": "Tag 06 Rund 02 - Spoletto - Norcia.gpx", "title": "Tag 06 Rund 02 - Spoletto - Norcia", "start": "Perugia", "end": "Perugia", "description": "Perugia – Spoleto – Ferentillo – Perugia.", "calimoto": "https://calimoto.com/calimotour/tag-06-rund-02-spoletto-norcia-r-zyzoAXsTtX", "km": 183, "points": 3427}, {"day": 7, "date": "Di, 26.05.2026", "variant": "Rund", "file": "Tag 07 Rund 03 - Gran Sasso.gpx", "title": "Tag 07 Rund 03 - Gran Sasso", "start": "Perugia", "end": "Perugia", "description": "Perugia – Gran Sasso – Perugia.", "calimoto": "https://calimoto.com/calimotour/tag-07-rund-03-gran-sasso-r-qqHnjnHlVd", "km": 248, "points": 4640}, {"day": 8, "date": "Mi, 27.05.2026", "variant": "Rund", "file": "Tag 08 Rund 04 - Siena.gpx", "title": "Tag 08 Rund 04 - Siena", "start": "Perugia", "end": "Perugia", "description": "Perugia – Val d’Orcia – Siena – Perugia.", "calimoto": "https://calimoto.com/calimotour/tag-08-rund-04-siena-r-SNXLaUS7Ij", "km": 246, "points": 5203}, {"day": 9, "date": "Do, 28.05.2026", "variant": "R1", "file": "Tag 09 R1 - Perugia-Montecantini.gpx", "title": "Tag 09 R1 - Perugia-Montecantini", "start": "Perugia", "end": "Montecatini Terme", "description": "Von Perugia durch den Apennin Richtung Norden nach Montecatini Terme.", "calimoto": "https://calimoto.com/calimotour/tag-09-r1-perugia-montecantini-r-a1Xnor5WRx", "km": 294, "points": 5913}, {"day": 9, "date": "Do, 28.05.2026", "variant": "R2", "file": "Tag 09 R2 - Perugia -Padua.gpx", "title": "Tag 09 R2 - Perugia -Padua", "start": "Perugia", "end": "Padua", "description": "Von Perugia nach Norden durch die Marken in den Raum Padua.", "calimoto": "https://calimoto.com/calimotour/tag-09-r2-perugia-padua-r-F5YsiUETCx", "km": 346, "points": 6494}, {"day": 10, "date": "Fr, 29.05.2026", "variant": "R1", "file": "Tag 10 R1 - MonteC-Brescia.gpx", "title": "Tag 10 R1 - MonteC-Brescia", "start": "Montecatini Terme", "end": "Brescia", "description": "Von Montecatini weiter durch den Apennin nordwestlich und dann bis Brescia.", "calimoto": "https://calimoto.com/calimotour/tag-10-r1-montec-brescia-r-Arr3hKBW9s", "km": 310, "points": 6276}, {"day": 10, "date": "Fr, 29.05.2026", "variant": "R2", "file": "Tag 10 R2 - Padua-Huber.gpx", "title": "Tag 10 R2 - Padua-Huber", "start": "Padua", "end": "Mühlbach", "description": "Von Padua nach Mühlbach.", "calimoto": "https://calimoto.com/calimotour/tag-10-r2-padua-huber-r-8nThLtZ9vj", "km": 260, "points": 5379}, {"day": 10, "date": "Fr, 29.05.2026", "variant": "R3", "file": "Tag 10 R3 - MonteC-Vicenza.gpx", "title": "Tag 10 R3 - MonteC-Vicenza", "start": "Montecatini Terme", "end": "Vicenza", "description": "Von Montecatini in den Raum Vicenza.", "calimoto": "https://calimoto.com/calimotour/tag-10-r3-montec-vicenza-r-ebHJXDFO44", "km": 269, "points": 5158}, {"day": 11, "date": "Sa, 30.05.2026", "variant": "R1", "file": "Tag 11 R1 - Brescia-Samnaun.gpx", "title": "Tag 11 R1 - Brescia-Samnaun", "start": "Brescia", "end": "Samnaun", "description": "Von Brescia über Lago di Iseo und Stilfserjoch nach Samnaun.", "calimoto": "https://calimoto.com/calimotour/tag-11-r1-brescia-samnaun-r-ObSBBjLb7K", "km": 274, "points": 5313}, {"day": 11, "date": "Sa, 30.05.2026", "variant": "R2", "file": "Tag 11 R2 - Huber-M.gpx", "title": "Tag 11 R2 - Huber-M", "start": "Mühlbach", "end": "München", "description": "Von Mühlbach nach München über Brenner und Achenpass.", "calimoto": "https://calimoto.com/calimotour/tag-11-r2-huber-m-r-2p83P8IZfZ", "km": 249, "points": 4152}, {"day": 11, "date": "Sa, 30.05.2026", "variant": "R3", "file": "Tag 11 R3 - Vicenza-Huber.gpx", "title": "Tag 11 R3 - Vicenza-Huber", "start": "Vicenza", "end": "Mühlbach", "description": "Von Vicenza nach Mühlbach über Manghenpass durch die Dolomiten.", "calimoto": "https://calimoto.com/calimotour/tag-11-r3-vicenza-huber-r-KCqtF5NAF7", "km": 277, "points": 5715}, {"day": 12, "date": "So, 31.05.2026", "variant": "R1", "file": "Tag 12 R1 - Samnaun-M.gpx", "title": "Tag 12 R1 - Samnaun-M", "start": "Samnaun", "end": "München", "description": "Von Samnaun über Hahntenjoch und Allgäu über Ammersee nach München.", "calimoto": "https://calimoto.com/calimotour/tag-12-r1-samnaun-m-r-kzsDZCy6NB", "km": 266, "points": 4175}, {"day": 12, "date": "So, 31.05.2026", "variant": "R3", "file": "Tag 12 R3 - Huber-M.gpx", "title": "Tag 12 R3 - Huber-M", "start": "Mühlbach", "end": "München", "description": "Von Mühlbach nach München über Brenner und Achenpass.", "calimoto": "https://calimoto.com/calimotour/tag-12-r3-huber-m-r-Bi2Aoetf0F", "km": 249, "points": 4152}];
+let map=L.map('map').setView([44.8,11.7],6);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(map);
+const layers={}; const bounds=[];
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+async function loadRoute(r){
+  try{
+    const res=await fetch('gpx/'+encodeURIComponent(r.file));
+    const xml=await res.text();
+    const doc=new DOMParser().parseFromString(xml,'application/xml');
+    const pts=[...doc.getElementsByTagName('trkpt'),...doc.getElementsByTagName('rtept')].map(p=>[parseFloat(p.getAttribute('lat')),parseFloat(p.getAttribute('lon'))]).filter(p=>!isNaN(p[0])&&!isNaN(p[1]));
+    if(!pts.length) return;
+    const color=r.variant==='R1'?'#1f6f5b':r.variant==='R2'?'#a45123':r.variant==='R3'?'#315f9d':'#7a3c8c';
+    const line=L.polyline(pts,{weight:4,opacity:.85,color}).addTo(map).bindPopup(`<strong>${esc(r.title)}</strong><br>Tag ${String(r.day).padStart(2,'0')} · ${esc(r.variant)}<br>${r.km} km · ${r.points} Punkte<br><a href="gpx/${encodeURIComponent(r.file)}" download>GPX herunterladen</a>`);
+    layers['gpx/'+r.file]=line; bounds.push(line.getBounds());
+    if(bounds.length===ROUTES.length){let b=bounds[0];bounds.slice(1).forEach(x=>b.extend(x));map.fitBounds(b.pad(.08));}
+  }catch(e){console.warn('GPX konnte nicht geladen werden',r.file,e)}
 }
-async function loadRoute(r, i, visible=true) {
-  const res = await fetch(r.file); const txt = await res.text(); const pts = parseGPX(txt);
-  const line = L.polyline(pts, { weight:4, opacity:.88, color:colors[i%colors.length] }).bindPopup(`<strong>${esc(r.name)}</strong><br>Tag ${r.day} · ${esc(r.variant)} · ca. ${r.km} km<br><a href="${r.file}" download>GPX herunterladen</a>`);
-  layers.set(r.file, line); pts.forEach(p => boundsAll.extend(p)); if (visible) line.addTo(map);
+ROUTES.forEach(loadRoute);
+function focusRoute(path){
+  const line=layers[path];
+  if(line){map.fitBounds(line.getBounds().pad(.16));line.openPopup();document.getElementById('karte').scrollIntoView({behavior:'smooth'});}
 }
-function buildLists() {
-  const list=document.getElementById('routeList'); const rows=document.getElementById('downloadRows');
-  ROUTES.forEach((r,i)=>{
-    const id='r'+i;
-    list.insertAdjacentHTML('beforeend', `<label class="route"><input type="checkbox" id="${id}" checked data-file="${r.file}"><span><strong>Tag ${r.day} · ${esc(r.variant)}</strong><br>${esc(r.name)}<br><span class="muted small">ca. ${r.km} km · ${r.points.toLocaleString('de-DE')} Punkte</span><br><span class="buttonrow"><a class="btn light" href="${r.file}" download>Download</a><button class="btn secondary" type="button" data-zoom="${r.file}">Zoom</button></span></span></label>`);
-    rows.insertAdjacentHTML('beforeend', `<tr><td>Tag ${r.day}</td><td>${esc(r.variant)}</td><td>${esc(r.name)}</td><td>ca. ${r.km} km</td><td><a class="btn" href="${r.file}" download>GPX</a></td></tr>`);
-  });
-}
-async function init() {
-  buildLists();
-  await Promise.all(ROUTES.map((r,i)=>loadRoute(r,i,true)));
-  if (boundsAll.isValid()) map.fitBounds(boundsAll.pad(.08));
-  document.querySelectorAll('input[data-file]').forEach(cb => cb.addEventListener('change', e => { const layer=layers.get(e.target.dataset.file); if (!layer) return; e.target.checked ? layer.addTo(map) : map.removeLayer(layer); }));
-  document.querySelectorAll('button[data-zoom]').forEach(b => b.addEventListener('click', e => { const layer=layers.get(e.target.dataset.zoom); if (layer) map.fitBounds(layer.getBounds().pad(.12)); }));
-  document.getElementById('showAll').onclick=()=>document.querySelectorAll('input[data-file]').forEach(cb=>{ if(!cb.checked) cb.click(); });
-  document.getElementById('hideAll').onclick=()=>document.querySelectorAll('input[data-file]').forEach(cb=>{ if(cb.checked) cb.click(); });
-}
-init().catch(err => { document.getElementById('routeList').innerHTML='<p class="muted">GPX-Dateien konnten nicht geladen werden. Wenn die Seite lokal per Datei geöffnet wurde, bitte über einen Webserver starten.</p>'; console.error(err); });
-if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(console.error)); }
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js'));}
 </script>
 </body></html>
