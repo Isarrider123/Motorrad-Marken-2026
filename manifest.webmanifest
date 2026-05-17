@@ -1,0 +1,16 @@
+{
+  "name": "Motorradreise Italien 2026",
+  "short_name": "Italien 2026",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f3ef",
+  "theme_color": "#245c4f",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

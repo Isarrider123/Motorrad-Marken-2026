@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#245c4f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Italien 2026">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <title>Motorradreise Italien 2026</title>
+  <style>
+    :root { --bg:#f5f3ef; --card:#fff; --ink:#1f2933; --muted:#697386; --line:#ddd6cc; --accent:#9b3d22; --green:#245c4f; --soft:#efe5d8; --shadow:0 10px 28px rgba(31,41,51,.10); --radius:18px; }
+    * { box-sizing:border-box } body { margin:0; font-family:system-ui,-apple-system,Segoe UI,sans-serif; background:var(--bg); color:var(--ink); line-height:1.5 }
+    header { background:linear-gradient(135deg,#245c4f,#9b3d22); color:white; padding:28px 16px 22px } .wrap { max-width:1180px; margin:0 auto }
+    h1 { margin:0; font-size:clamp(2rem,6vw,4rem); line-height:1.05; letter-spacing:-.04em } h2 { margin:0 0 14px; font-size:clamp(1.45rem,3vw,2.1rem) } h3 { margin:.1rem 0 .4rem }
+    .subtitle { max-width:850px; opacity:.95 } .pillbar { display:flex; flex-wrap:wrap; gap:8px; margin-top:15px } .pill { border:1px solid rgba(255,255,255,.26); background:rgba(255,255,255,.15); border-radius:999px; padding:8px 11px; font-weight:650 }
+    nav { position:sticky; top:0; z-index:1001; background:rgba(245,243,239,.94); backdrop-filter:blur(12px); border-bottom:1px solid var(--line); overflow:auto; white-space:nowrap } nav .wrap { display:flex; gap:7px; padding:9px 12px } nav a { color:var(--ink); text-decoration:none; font-weight:750; padding:8px 11px; border-radius:999px } nav a:hover { background:var(--soft) }
+    main { padding:20px 13px 56px } section { margin:24px auto } .grid { display:grid; gap:14px } .two { grid-template-columns:repeat(auto-fit,minmax(280px,1fr)) } .three { grid-template-columns:repeat(auto-fit,minmax(220px,1fr)) }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow) } .muted { color:var(--muted) } .small { font-size:.91rem }
+    .tag { display:inline-block; background:var(--soft); border-radius:999px; padding:4px 8px; margin:2px 4px 2px 0; font-size:.82rem; font-weight:800 } .green { background:#dfece7; color:#164438 } .warn { background:#fff4d6; color:#614700 }
+    .mapgrid { display:grid; grid-template-columns:340px 1fr; gap:14px } #map { min-height:72vh; border-radius:var(--radius); border:1px solid var(--line); box-shadow:var(--shadow); background:#ddd }
+    .route-list { max-height:72vh; overflow:auto; padding-right:4px } .route { display:grid; grid-template-columns:auto 1fr; gap:9px; padding:10px; border:1px solid var(--line); border-radius:14px; margin-bottom:9px; background:#fff } .route input { margin-top:5px }
+    .btn { display:inline-block; text-decoration:none; background:var(--green); color:white; border-radius:12px; padding:8px 10px; font-weight:800; font-size:.9rem } .btn.secondary { background:var(--accent) } .btn.light { background:var(--soft); color:var(--ink) } .buttonrow { display:flex; flex-wrap:wrap; gap:8px; margin-top:9px }
+    table { width:100%; border-collapse:collapse; background:#fff; border-radius:14px; overflow:hidden } th,td { text-align:left; padding:10px; border-bottom:1px solid var(--line); vertical-align:top } th { background:var(--soft); font-size:.9rem } tr:last-child td { border-bottom:none }
+    .installbox { background:#fffaf2; border:1px solid #e4d4ba; border-radius:var(--radius); padding:14px } code { background:var(--soft); padding:2px 5px; border-radius:7px }
+    @media(max-width:850px) { .mapgrid { grid-template-columns:1fr } #map { min-height:58vh } .route-list { max-height:none } }
+  </style>
+</head>
+<body>
+<header><div class="wrap"><h1>Motorradreise Italien 2026</h1><p class="subtitle">Interaktive Routenübersicht für Marken, Umbrien, Toskana und Rückreise. GPX-Tracks können angezeigt, einzeln heruntergeladen und als Web-App auf dem iPhone abgelegt werden.</p><div class="pillbar"><span class="pill">🏍️ Start 20.05.2026</span><span class="pill">🗺️ 19 GPX-Tracks</span><span class="pill">📱 App-Modus vorbereitet</span></div></div></header>
+<nav><div class="wrap"><a href="#karte">Karte</a><a href="#downloads">Downloads</a><a href="#app">iPhone-App-Modus</a><a href="#hotels">Hotels</a><a href="#notfall">Notfall</a></div></nav>
+<main class="wrap">
+<section id="karte"><h2>Interaktive Kartenansicht</h2><div class="mapgrid"><div class="card route-list"><h3>GPX-Tracks</h3><p class="muted small">Haken setzen oder entfernen. Ein Klick auf „Zoom“ springt zur Route. Die Karte lädt OpenStreetMap-Kacheln aus dem Internet; die GPX-Dateien selbst liegen lokal im Paket.</p><div id="routeList"></div><div class="buttonrow"><button class="btn" id="showAll">Alle anzeigen</button><button class="btn secondary" id="hideAll">Alle ausblenden</button></div></div><div id="map"></div></div></section>
+<section id="downloads"><h2>GPX-Downloads</h2><div class="card"><table><thead><tr><th>Tag</th><th>Variante</th><th>Route</th><th>Länge</th><th>Download</th></tr></thead><tbody id="downloadRows"></tbody></table></div></section>
+<section id="app"><h2>App-Modus für iPhone</h2><div class="installbox"><p><strong>Server-Nutzung:</strong> kompletten Ordner auf deinen Webserver laden und die Seite in Safari öffnen. Dann über <strong>Teilen → Zum Home-Bildschirm</strong> hinzufügen.</p><p><strong>Lokal am iPhone:</strong> Die HTML-Datei lässt sich zwar öffnen, aber GPX-Fetch und App-Modus funktionieren lokal je nach iOS/Safari nicht zuverlässig. Für den echten App-Modus ist die Server-Variante die saubere Lösung.</p><p><strong>Offline:</strong> Nach dem ersten Laden speichert der Service Worker die Website-Dateien. Kartenkacheln von OpenStreetMap sind nur verfügbar, wenn sie vorher geladen wurden oder Internet besteht.</p></div></section>
+<section id="hotels"><h2>Hotels</h2><div class="card"><p class="muted">Hier können die finalen Hotels mit Adresse, Telefon, Buchungsnummer und Parkplatzhinweis ergänzt werden.</p></div></section>
+<section id="notfall"><h2>Notfall</h2><div class="grid two"><div class="card"><h3>Nummern</h3><ul><li>Europaweiter Notruf: <strong>112</strong></li><li>ADAC / Schutzbrief: eintragen</li><li>Auslandskrankenversicherung: eintragen</li></ul></div><div class="card"><h3>Täglich prüfen</h3><ul><li>Wetter / Gewitter</li><li>Passöffnungen</li><li>Garmin-Neuberechnung</li><li>Tankreichweite</li></ul></div></div></section>
+</main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const ROUTES = [
+  {
+    "day": 1,
+    "variant": "R1",
+    "name": "Tag 01 R1 - GAP-Tim-Huber",
+    "file": "gpx/tag-01-r1-gap-tim-huber.gpx",
+    "km": 301,
+    "points": 5653,
+    "start": [
+      47.50071818009019,
+      11.101725306361914
+    ],
+    "end": [
+      46.84778904542327,
+      11.9821622595191
+    ]
+  },
+  {
+    "day": 1,
+    "variant": "R2",
+    "name": "Tag 01 R2- GAP-Brenner-Huber",
+    "file": "gpx/tag-01-r2-gap-brenner-huber.gpx",
+    "km": 222,
+    "points": 4202,
+    "start": [
+      47.50071818009019,
+      11.101725306361914
+    ],
+    "end": [
+      46.84778904542327,
+      11.9821622595191
+    ]
+  },
+  {
+    "day": 2,
+    "variant": "R1",
+    "name": "Tag 02 R1 - Huber-Chioggia",
+    "file": "gpx/tag-02-r1-huber-chioggia.gpx",
+    "km": 324,
+    "points": 6324,
+    "start": [
+      46.84778904542327,
+      11.9821622595191
+    ],
+    "end": [
+      45.198580948635936,
+      12.299836138263345
+    ]
+  },
+  {
+    "day": 3,
+    "variant": "R1",
+    "name": "Tag 03 R1 - Chioggia-Loreto",
+    "file": "gpx/tag-03-r1-chioggia-loreto.gpx",
+    "km": 307,
+    "points": 5972,
+    "start": [
+      45.200090780854225,
+      12.26510614156723
+    ],
+    "end": [
+      43.436326794326305,
+      13.608737038448453
+    ]
+  },
+  {
+    "day": 4,
+    "variant": "R1",
+    "name": "Tag 04 R1 - Loreto - Perugia",
+    "file": "gpx/tag-04-r1-loreto-perugia.gpx",
+    "km": 266,
+    "points": 5383,
+    "start": [
+      43.436326794326305,
+      13.608737038448453
+    ],
+    "end": [
+      43.112482242286205,
+      12.377589270472527
+    ]
+  },
+  {
+    "day": 5,
+    "variant": "Rundtour",
+    "name": "Tag 05 Rund 01 - Assisi-Gubbio-Umbertide 001",
+    "file": "gpx/tag-05-rund-01-assisi-gubbio-umbertide-001.gpx",
+    "km": 186,
+    "points": 3971,
+    "start": [
+      43.112482242286205,
+      12.377589270472527
+    ],
+    "end": [
+      43.112482242286205,
+      12.377589270472527
+    ]
+  },
+  {
+    "day": 6,
+    "variant": "Rundtour",
+    "name": "Tag 06 Rund 02 - Spoletto - Norcia",
+    "file": "gpx/tag-06-rund-02-spoletto-norcia.gpx",
+    "km": 183,
+    "points": 3427,
+    "start": [
+      43.112482242286205,
+      12.377589270472527
+    ],
+    "end": [
+      43.112482242286205,
+      12.377589270472527
+    ]
+  },
+  {
+    "day": 7,
+    "variant": "Rundtour",
+    "name": "Tag 07 Rund 03 - Gran Sasso",
+    "file": "gpx/tag-07-rund-03-gran-sasso.gpx",
+    "km": 248,
+    "points": 4640,
+    "start": [
+      43.112482242286205,
+      12.377589270472527
+    ],
+    "end": [
+      43.112482242286205,
+      12.377589270472527
+    ]
+  },
+  {
+    "day": 8,
+    "variant": "Rundtour",
+    "name": "Tag 08 Rund 04 - Siena",
+    "file": "gpx/tag-08-rund-04-siena.gpx",
+    "km": 246,
+    "points": 5203,
+    "start": [
+      43.112482242286205,
+      12.377589270472527
+    ],
+    "end": [
+      43.112482242286205,
+      12.377589270472527
+    ]
+  },
+  {
+    "day": 9,
+    "variant": "R1",
+    "name": "Tag 09 R1 - Perugia-Montecantini",
+    "file": "gpx/tag-09-r1-perugia-montecantini.gpx",
+    "km": 294,
+    "points": 5913,
+    "start": [
+      43.112482242286205,
+      12.377589270472527
+    ],
+    "end": [
+      43.88066849671304,
+      10.777339534834027
+    ]
+  },
+  {
+    "day": 9,
+    "variant": "R2",
+    "name": "Tag 09 R2 - Perugia -Padua",
+    "file": "gpx/tag-09-r2-perugia-padua.gpx",
+    "km": 346,
+    "points": 6494,
+    "start": [
+      43.112482242286205,
+      12.377589270472527
+    ],
+    "end": [
+      45.41177272796631,
+      11.863946914672852
+    ]
+  },
+  {
+    "day": 10,
+    "variant": "R1",
+    "name": "Tag 10 R1 - MonteC-Brescia",
+    "file": "gpx/tag-10-r1-montec-brescia.gpx",
+    "km": 310,
+    "points": 6276,
+    "start": [
+      43.88066849671304,
+      10.777339534834027
+    ],
+    "end": [
+      45.561004634946585,
+      10.135745834559202
+    ]
+  },
+  {
+    "day": 10,
+    "variant": "R2",
+    "name": "Tag 10 R2 - Padua-Huber",
+    "file": "gpx/tag-10-r2-padua-huber.gpx",
+    "km": 260,
+    "points": 5379,
+    "start": [
+      45.41177272796631,
+      11.863946914672852
+    ],
+    "end": [
+      46.84778904542327,
+      11.9821622595191
+    ]
+  },
+  {
+    "day": 10,
+    "variant": "R3",
+    "name": "Tag 10 R3 - MonteC-Vicenza",
+    "file": "gpx/tag-10-r3-montec-vicenza.gpx",
+    "km": 269,
+    "points": 5158,
+    "start": [
+      43.88066849671304,
+      10.777339534834027
+    ],
+    "end": [
+      45.55026054382324,
+      11.550815105438232
+    ]
+  },
+  {
+    "day": 11,
+    "variant": "R1",
+    "name": "Tag 11 R1 - Brescia-Samnaun",
+    "file": "gpx/tag-11-r1-brescia-samnaun.gpx",
+    "km": 274,
+    "points": 5313,
+    "start": [
+      45.561004634946585,
+      10.135745834559202
+    ],
+    "end": [
+      46.94627523422241,
+      10.362811088562012
+    ]
+  },
+  {
+    "day": 11,
+    "variant": "R2",
+    "name": "Tag 11 R2 - Huber-M",
+    "file": "gpx/tag-11-r2-huber-m.gpx",
+    "km": 249,
+    "points": 4152,
+    "start": [
+      46.84778904542327,
+      11.9821622595191
+    ],
+    "end": [
+      48.08923959732056,
+      11.594524383544922
+    ]
+  },
+  {
+    "day": 11,
+    "variant": "R3",
+    "name": "Tag 11 R3 - Vicenza-Huber",
+    "file": "gpx/tag-11-r3-vicenza-huber.gpx",
+    "km": 277,
+    "points": 5715,
+    "start": [
+      45.55026054382324,
+      11.550815105438232
+    ],
+    "end": [
+      46.84778904542327,
+      11.9821622595191
+    ]
+  },
+  {
+    "day": 12,
+    "variant": "R1",
+    "name": "Tag 12 R1 - Samnaun-M",
+    "file": "gpx/tag-12-r1-samnaun-m.gpx",
+    "km": 266,
+    "points": 4175,
+    "start": [
+      46.94627523422241,
+      10.362811088562012
+    ],
+    "end": [
+      48.08923959732056,
+      11.594524383544922
+    ]
+  },
+  {
+    "day": 12,
+    "variant": "R3",
+    "name": "Tag 12 R3 - Huber-M",
+    "file": "gpx/tag-12-r3-huber-m.gpx",
+    "km": 249,
+    "points": 4152,
+    "start": [
+      46.84778904542327,
+      11.9821622595191
+    ],
+    "end": [
+      48.08923959732056,
+      11.594524383544922
+    ]
+  }
+];
+const map = L.map('map', { preferCanvas:true }).setView([43.6, 12.5], 6);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '&copy; OpenStreetMap-Mitwirkende' }).addTo(map);
+const layers = new Map();
+const boundsAll = L.latLngBounds();
+const colors = ['#245c4f','#9b3d22','#1d4ed8','#7c3aed','#b45309','#be123c','#047857','#0f766e','#4338ca','#a16207'];
+function esc(s) { return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function parseGPX(xmlText) {
+  const xml = new DOMParser().parseFromString(xmlText,'application/xml');
+  const pts = [...xml.getElementsByTagName('trkpt'), ...xml.getElementsByTagName('rtept')]
+    .map(p => [parseFloat(p.getAttribute('lat')), parseFloat(p.getAttribute('lon'))])
+    .filter(p => Number.isFinite(p[0]) && Number.isFinite(p[1]));
+  return pts;
+}
+async function loadRoute(r, i, visible=true) {
+  const res = await fetch(r.file); const txt = await res.text(); const pts = parseGPX(txt);
+  const line = L.polyline(pts, { weight:4, opacity:.88, color:colors[i%colors.length] }).bindPopup(`<strong>${esc(r.name)}</strong><br>Tag ${r.day} · ${esc(r.variant)} · ca. ${r.km} km<br><a href="${r.file}" download>GPX herunterladen</a>`);
+  layers.set(r.file, line); pts.forEach(p => boundsAll.extend(p)); if (visible) line.addTo(map);
+}
+function buildLists() {
+  const list=document.getElementById('routeList'); const rows=document.getElementById('downloadRows');
+  ROUTES.forEach((r,i)=>{
+    const id='r'+i;
+    list.insertAdjacentHTML('beforeend', `<label class="route"><input type="checkbox" id="${id}" checked data-file="${r.file}"><span><strong>Tag ${r.day} · ${esc(r.variant)}</strong><br>${esc(r.name)}<br><span class="muted small">ca. ${r.km} km · ${r.points.toLocaleString('de-DE')} Punkte</span><br><span class="buttonrow"><a class="btn light" href="${r.file}" download>Download</a><button class="btn secondary" type="button" data-zoom="${r.file}">Zoom</button></span></span></label>`);
+    rows.insertAdjacentHTML('beforeend', `<tr><td>Tag ${r.day}</td><td>${esc(r.variant)}</td><td>${esc(r.name)}</td><td>ca. ${r.km} km</td><td><a class="btn" href="${r.file}" download>GPX</a></td></tr>`);
+  });
+}
+async function init() {
+  buildLists();
+  await Promise.all(ROUTES.map((r,i)=>loadRoute(r,i,true)));
+  if (boundsAll.isValid()) map.fitBounds(boundsAll.pad(.08));
+  document.querySelectorAll('input[data-file]').forEach(cb => cb.addEventListener('change', e => { const layer=layers.get(e.target.dataset.file); if (!layer) return; e.target.checked ? layer.addTo(map) : map.removeLayer(layer); }));
+  document.querySelectorAll('button[data-zoom]').forEach(b => b.addEventListener('click', e => { const layer=layers.get(e.target.dataset.zoom); if (layer) map.fitBounds(layer.getBounds().pad(.12)); }));
+  document.getElementById('showAll').onclick=()=>document.querySelectorAll('input[data-file]').forEach(cb=>{ if(!cb.checked) cb.click(); });
+  document.getElementById('hideAll').onclick=()=>document.querySelectorAll('input[data-file]').forEach(cb=>{ if(cb.checked) cb.click(); });
+}
+init().catch(err => { document.getElementById('routeList').innerHTML='<p class="muted">GPX-Dateien konnten nicht geladen werden. Wenn die Seite lokal per Datei geöffnet wurde, bitte über einen Webserver starten.</p>'; console.error(err); });
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(console.error)); }
+</script>
+</body></html>
